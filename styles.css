@@ -1,0 +1,150 @@
+@font-face {
+    font-family: 'Norse Bold';
+    src: url(Norse-Bold.otf);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#container {
+    display: flex;
+    border-radius: 10px;
+    max-width: 90%;
+    overflow: hidden;
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, .5);
+}
+
+#left {
+    width: 35%;
+    background-image: url('leaves.avif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 900px;
+}
+
+#odin {
+    display: flex;
+    margin-top:30%;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .5);
+    color: white; 
+    padding: 10px;   
+    font-family: 'Norse Bold';
+}
+
+#odin-logo {
+    max-height: 100%;
+    opacity: 100%;
+}
+
+#odin>h1 {
+    font-size: 100px;
+}
+
+#right {
+    width: 65%;
+    background-color: #eee;
+}
+
+#right>#top {
+    padding: 5% 10%;
+}
+
+#right>#top p, p {
+    font-size: 22px;
+    font-weight: bold;
+    padding-bottom:5%;
+}
+
+#bottom p {
+    margin-top:50px;
+    font-size:15px;
+}
+
+em {
+    font-style: italic;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    flex-direction: column;
+}
+
+form h2 {
+    font-size: 22px;
+    font-weight: bold;
+    padding-bottom:5%;
+}
+
+#bottom {
+    margin-left: 10%;
+}
+
+#form_container {
+    background-color: #fff;
+    padding: 5% 10%;
+    box-shadow: 0px 5px 20px rgba(0,0,0,.5);
+}
+
+fieldset {
+    margin-bottom: 25px;
+    display:flex;
+    gap: 20px;
+}
+
+.form_item {
+    display:flex;
+    flex-direction: column;
+    width:35%;
+    text-transform: uppercase;
+    gap:5px;
+}
+
+button {
+    margin-top: 50px;
+    background-color: #595d48;
+    border: 0px;
+    border-radius: 5px;
+    width: 25%;
+    color: #fff;
+    Height: 50px;
+    font-size: 22px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, .2);
+}
+
+input {
+    border: 1px solid #E5E7EB;
+    border-radius: 5px;
+    height: 30px;
+    width: 100%;
+    font-size: 18px;
+}
+
+input:invalid{
+    border: 1px solid red;
+}
+
+input:focus {
+    border: 1px solid blue;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, .2);
+}
+
+input:valid {
+    border: 1px solid forestgreen;
+}
+
+input.error {
+    border: 1px solid red;
+}
+
+
+
