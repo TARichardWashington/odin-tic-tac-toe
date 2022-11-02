@@ -123,18 +123,52 @@ var gameboard = (function gameBoard() {
             }
 
             return whoWon;
+        }, 
+        resetBoard() {
+            for(let i = 0; i < board.length; i++) {
+                for(let n = 0; n < board[i].length; n++) {
+                    board[i][n] = null;
+                }
+            }
         }
     }})();
 
+/* 
+ * Gameboard
+ * 
+ * CheckPosition()
+ * player1Move()
+ * player2Move()
+ * hasSomeoneOne()
+ * resetBoard()
+ */
 
+var count = 9;
 
-gameboard.player2Move(0, 2);
-gameboard.player2Move(1, 1);
-gameboard.player2Move(2, 0);
+while(!gameboard.hasSomeoneWon()) {
+    let moveX = randomIntFromInterval(0, 2);
+    let moveY = randomIntFromInterval(0, 2);
 
-gameboard.player1Move(0, 2);
-gameboard.player1Move(1, 1);
-gameboard.player1Move(2, 0);
+    while(true) {
+        let moveX = randomIntFromInterval(0, 2);
+        let moveY = randomIntFromInterval(0, 2);
+
+        if(gameboard.player1Move(moveX, moveY)) {
+            console.log('Moved' + moveX + moveY);
+            break;
+        }
+    }
+
+    count--;
+    console.log(count);
+    if(count == 0) {
+        break;
+    }
+}
+
+function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
 
 console.log(gameboard.hasSomeoneWon());
 
@@ -142,4 +176,3 @@ console.log(gameboard.hasSomeoneWon());
 var domBoard = document.querySelector('#board');
 
 gameboard.display(domBoard);
-
