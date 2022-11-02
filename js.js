@@ -8,11 +8,26 @@ var gameboard = (function gameBoard() {
                  [null, null, null]];
 
     return {
+        checkPosition(x, y) {
+            return board[y][x] == null
+        },
         player1Move(x, y) {
-            board[y][x] = player1.symbol;
+            if(this.checkPosition(x, y)) {
+                board[y][x] = player1.symbol;
+                return true;
+            } else {
+                return false;
+            }
+
         },
         player2Move(x, y) {
-            board[y][x] = player2.symbol;
+            if(this.checkPosition(x, y)) {
+                board[y][x] = player2.symbol;
+                return true;
+            } else {
+                return false;
+            }
+            
         },
         display(domElement) {                    
             let table = document.createElement("table");
@@ -33,11 +48,15 @@ var gameboard = (function gameBoard() {
             domElement.append(table);
         }, 
         hasSomeoneWon() {
+            var whoWon = false;
             
             // Check a winner in the horizontal rows
             board.forEach((row) => {
-                if(row[0] == 'x' && row[1] == 'x' && row[2] == 'x' ) {
-                    console.log('winner');
+                if(row[0] != null && row[1] != null && row[2] != null) {
+                    if(row[0] == row[1] && row[0] == row[2]) {
+                        whoWon = row[0];
+                    }
+                    
                 }
             });          
 
@@ -48,40 +67,77 @@ var gameboard = (function gameBoard() {
             
             board.forEach((row, index) => {
                 if(index === 0) {
-                    row[0] != null ? col1 = row[0]: '';
-                } else {
-                    row[0] != null && col1 != false ? col1 = row[0]: '';
+                    if(row[0] != null) {
+                        col1 = row[0];
+                    }
+                }
+
+                if(row[0] != col1 || row[0] == false) {
+                    col1 = false;
                 }
 
                 if(index === 0) {
-                    row[1] != null ? col2 = row[1]: '';
-                } else {
-                    row[1] != null && col2 != false ? col2 = row[1]: '';
+                    if(row[1] != null) {
+                        col2 = row[1];
+                    }
+                }
+
+                if(row[1] != col2 || row[1] == false) {
+                    col2 = false;
                 }
 
                 if(index === 0) {
-                    row[2] != null ? col3 = row[2]: '';
-                } else {
-                    row[2] != null && col3 != false ? col3 = row[2]: '';
+                    if(row[2] != null) {
+                        col3 = row[2];
+                    }
                 }
-            });  
+
+                if(row[2] != col3 || row[2] == false) {
+                    col3 = false;
+                }
+            }); 
+            
+            if(col1 != false) {
+                whoWon = col1;
+            }
+
+            if(col2 != false) {
+                whoWon = col2;
+            }
+
+            if(col3 != false) {
+                whoWon = col3;
+            }
 
             // Check a winner on the diagonals
             if(board[0][0] != null && board[1][1] != null && board[2][2] != null) {
-                console.log('winner');
+                if(board[0][0] == board[1][1] && board[0][0] == board[2][2]) {
+                    whoWon = board[0][0];
+                }
+
             }
             if(board[0][2] != null && board[1][1] != null && board[2][0] != null) {
-                console.log('winner 2');
+                if(board[0][2] == board[1][1] && board[0][2] == board[2][0]) {
+                    whoWon = board[0][2];
+                }
             }
 
-            return false;
+            return whoWon;
         }
     }})();
+
+
+
+gameboard.player2Move(0, 2);
+gameboard.player2Move(1, 1);
+gameboard.player2Move(2, 0);
 
 gameboard.player1Move(0, 2);
 gameboard.player1Move(1, 1);
 gameboard.player1Move(2, 0);
-gameboard.hasSomeoneWon();
+
+console.log(gameboard.hasSomeoneWon());
+
 
 var domBoard = document.querySelector('#board');
 
