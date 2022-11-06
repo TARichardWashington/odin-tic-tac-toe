@@ -1,7 +1,19 @@
+/* 
+ * Gameboard - module singleton
+ * 
+ * CheckPosition()
+ * player1Move()
+ * player2Move()
+ * hasSomeoneOne()
+ * resetBoard()
+ */
+
 var gameboard = (function gameBoard() {
    
     var player1 = { symbol: 'x'};
     var player2 =  { symbol: 'o'};
+
+    var finished = false;
 
     var board = [[null, null, null], 
                  [null, null, null], 
@@ -12,7 +24,7 @@ var gameboard = (function gameBoard() {
             return board[y][x] == null
         },
         player1Move(x, y) {
-            if(this.checkPosition(x, y)) {
+            if(this.checkPosition(x, y) && finished === false) {
                 board[y][x] = player1.symbol;
                 return true;
             } else {
@@ -21,7 +33,7 @@ var gameboard = (function gameBoard() {
 
         },
         player2Move(x, y) {
-            if(this.checkPosition(x, y)) {
+            if(this.checkPosition(x, y) && finished === false) {
                 board[y][x] = player2.symbol;
                 return true;
             } else {
@@ -29,23 +41,29 @@ var gameboard = (function gameBoard() {
             }
             
         },
-        display(domElement) {                    
-            let table = document.createElement("table");
-            
-            for(let x = 0; x < 3; x++) {
-                let row = document.createElement('tr');
-
-                for(let y = 0; y < 3; y++) {
-                    let data = document.createElement('td');                    
-                    row.append(data);
-
-                    data.innerText = board[x][y] ? board[x][y] : '-';
+        display(domElement) {  
+            if(!domElement.hasChildNodes()) { 
+                for(let x = 0; x < 3; x++) {
+                    for(let y = 0; y < 3; y++) {
+                        let cell = document.createElement('div'); 
+                        cell.setAttribute('class', 'cell');  
+                        cell.setAttribute('data-x', x);
+                        cell.setAttribute('data-y', y)                 
+                        domElement.append(cell);
+    
+                        cell.innerText = board[y][x] ? board[y][x] : '-';
+                    }   
                 }   
+            } else {
+                var cells = domElement.childNodes;
 
-                table.append(row);
-            }
+                cells.forEach(cell => {
+                    let x = cell.dataset.x;
+                    let y = cell.dataset.y;
 
-            domElement.append(table);
+                    cell.innerText = board[y][x] ? board[y][x] : '-';
+                });
+            }                     
         }, 
         hasSomeoneWon() {
             var whoWon = false;
@@ -122,6 +140,10 @@ var gameboard = (function gameBoard() {
                 }
             }
 
+            if(whoWon) {
+                finished = true;
+            }
+
             return whoWon;
         }, 
         resetBoard() {
@@ -133,46 +155,78 @@ var gameboard = (function gameBoard() {
         }
     }})();
 
-/* 
- * Gameboard
+/* Random game simulator - function
  * 
- * CheckPosition()
- * player1Move()
- * player2Move()
- * hasSomeoneOne()
- * resetBoard()
+ * 
+ * 
  */
 
-var count = 9;
+function simulator(whoGoesFirst) {
+    var count = 9;
 
-while(!gameboard.hasSomeoneWon()) {
-    let moveX = randomIntFromInterval(0, 2);
-    let moveY = randomIntFromInterval(0, 2);
+    var turn = whoGoesFirst;
 
-    while(true) {
-        let moveX = randomIntFromInterval(0, 2);
-        let moveY = randomIntFromInterval(0, 2);
+    while(!gameboard.hasSomeoneWon() && count != 0) {
 
-        if(gameboard.player1Move(moveX, moveY)) {
-            console.log('Moved' + moveX + moveY);
-            break;
+        while(true) {
+            let moveX = randomIntFromInterval(0, 2);
+            let moveY = randomIntFromInterval(0, 2);
+
+            if(turn === 1) {
+                if(gameboard.player2Move(moveX, moveY)) {
+                    console.log('Player 1 moved ' + moveX + moveY);
+                    turn = 0;
+                    break;
+                }
+            } else {
+                if(gameboard.player1Move(moveX, moveY)) {
+                    console.log('Player 2 moved ' + moveX + moveY);
+                    turn = 1;
+                    break;
+                }
+            }
         }
+
+        count--;
+        console.log('Turns left ' + count);
     }
 
-    count--;
-    console.log(count);
-    if(count == 0) {
-        break;
+    function randomIntFromInterval(min, max) { // min and max included 
+        return Math.floor(Math.random() * (max - min + 1) + min)
     }
-}
 
-function randomIntFromInterval(min, max) { // min and max included 
-    return Math.floor(Math.random() * (max - min + 1) + min)
-  }
+    var winner = gameboard.hasSomeoneWon();
 
-console.log(gameboard.hasSomeoneWon());
+    console.log(winner ? 'Player ' + winner + ' won!' : 'Draw');
+};
+
+//simulator(1);
+
 
 
 var domBoard = document.querySelector('#board');
 
 gameboard.display(domBoard);
+
+var cells = document.querySelectorAll('.cell');
+var winner = document.querySelector('#winner');
+
+var playerTurn = 1;
+
+cells.forEach(cell => { cell.addEventListener('click', function() {
+    console.log('Cell ' + this.dataset.x + this.dataset.y + ' chosen');
+    if(playerTurn === 1) {
+        playerTurn = 2;
+        gameboard.player1Move(this.dataset.x, this.dataset.y);
+    } else {
+        gameboard.player2Move(this.dataset.x, this.dataset.y);
+        playerTurn = 1;
+    }
+    gameboard.display(domBoard);
+
+    var hasWinner = gameboard.hasSomeoneWon();
+    
+    if(hasWinner) {
+       winner.textContent = hasWinner + ' is the winner!';
+    }
+}) });

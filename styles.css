@@ -11,3 +11,16 @@ body {
     gap: 20px;
 }
 
+#board {
+    background-color: aquamarine;
+    display: grid;
+    grid-template: 50px 50px 50px / 50px 50px 50px;
+}
+
+.cell {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+
