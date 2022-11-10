@@ -1,0 +1,26 @@
+body {
+    font-size: 36px;
+    height: 100vh;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+#board {
+    background-color: aquamarine;
+    display: grid;
+    grid-template: 50px 50px 50px / 50px 50px 50px;
+}
+
+.cell {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+
