@@ -17,6 +17,5 @@
     "build": "webpack --progress --mode=production",
     "watch": "webpack --progress --watch",
     "serve": "webpack-dev-server --open"  
-  },
-  "type": "module"
+  }
 }
