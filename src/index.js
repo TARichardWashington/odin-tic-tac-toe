@@ -1,12 +1,12 @@
 import gameboard from "./gameboard.js";
+import './reset.css';
+import './styles.css';
 
 /* Random game simulator - function
  * 
  * 
  * 
  */
-
-;;
 
 function simulator(whoGoesFirst) {
     var count = 9;
